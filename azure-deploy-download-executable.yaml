@@ -1,0 +1,33 @@
+trigger: none
+
+pool:
+  vmImage: ubuntu-latest
+
+variables:
+  ASTRO_VERSION: '1.37.0'
+  WORKING_DIR: 'astro_project_dir'
+  ARCH: 'amd64'
+  OS: 'linux'
+
+steps:
+- bash: |
+    set -euo pipefail
+
+    mkdir -p "$ASTRO_PROJECT_DIR"
+    cd "$ASTRO_PROJECT_DIR"
+
+    ARTIFACT="astro_${ASTRO_VERSION}_${OS}_${ARCH}.tar.gz"
+    URL="https://github.com/astronomer/astro-cli/releases/download/v${ASTRO_VERSION}/${ARTIFACT}"
+
+    curl -sSL -o "$ARTIFACT" "$URL"
+    tar -xzf "$ARTIFACT"
+    rm "$ARTIFACT"
+
+    chmod +x astro
+    ./astro deploy
+  displayName: Install Astro CLI
+  env:
+    ASTRO_VERSION: $(ASTRO_VERSION)
+    ASTRO_PROJECT_DIR: $(Build.SourcesDirectory)/$(WORKING_DIR)
+    ARCH: $(ARCH)
+    OS: $(OS)
