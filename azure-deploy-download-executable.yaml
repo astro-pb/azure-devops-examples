@@ -5,7 +5,7 @@ pool:
 
 variables:
   ASTRO_VERSION: '1.37.0'
-  WORKING_DIR: 'astro_project_dir'
+  ASTRO_PROJECT_DIR: 'astro_project_dir'
   ARCH: 'amd64'
   OS: 'linux'
 
