@@ -28,6 +28,6 @@ steps:
   displayName: Install Astro CLI
   env:
     ASTRO_VERSION: $(ASTRO_VERSION)
-    ASTRO_PROJECT_DIR: $(Build.SourcesDirectory)/$(WORKING_DIR)
+    ASTRO_PROJECT_DIR: $(Build.SourcesDirectory)/$(ASTRO_PROJECT_DIR)
     ARCH: $(ARCH)
     OS: $(OS)

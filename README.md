@@ -19,7 +19,8 @@ Adjust the `on` block if you need different triggers (e.g., branches, tags, or m
 
 1. Import the YAML file into Azure DevOps and connect a pipeline to it.
 2. Create two secure pipeline variables (or a variable group) named `ASTRONOMER_KEY_ID` and `ASTRONOMER_KEY_SECRET` populated with an Astronomer service account key that has deploy access to your workspace.
-3. Run the pipeline. It installs the latest Astro CLI via `install.astronomer.io` and executes `astro deploy` using the provided key pair.
+3. Set the `ASTRO_PROJECT_DIR` variable to the folder (relative to the repo root) that contains your Astronomer project. It defaults to `example_project_dir`.
+4. Run the pipeline. It installs the latest Astro CLI via `install.astronomer.io`, changes into `$(Build.SourcesDirectory)/$(ASTRO_PROJECT_DIR)`, and executes `astro deploy` using the provided key pair.
 
 This template is ideal when you just added a new DAG or updated an existing one and want a straightforward automated deploy. Add pre-deploy validation (tests, linting) as needed by inserting additional `script` steps.
 
@@ -28,11 +29,11 @@ This template is ideal when you just added a new DAG or updated an existing one 
 1. Import the YAML file into Azure DevOps and create a pipeline that points to it.
 2. Set the pipeline variables to match your deployment:
    - `ASTRO_VERSION`: Astro CLI release to download.
-   - `WORKING_DIR`: folder within the repo that contains the Astronomer project files (defaults to `astro_project_dir`).
+   - `ASTRO_PROJECT_DIR`: folder within the repo that contains the Astronomer project files (defaults to `example_project_dir`).
    - `OS` / `ARCH`: platform used for the CLI download.
 3. Add a secure pipeline variable or variable group for any required Astronomer credentials (for example `ASTRO_DEPLOYMENT_ID` or API token) and reference them from the script before running `./astro deploy`.
 
-The script downloads the specified Astro CLI tarball, extracts it into the working directory, marks the CLI executable, and executes `astro deploy`. Extend the script with additional steps (linting, testing, environment prep) as needed for your deployment flow.
+The script downloads the specified Astro CLI tarball, extracts it into `$(Build.SourcesDirectory)/$(ASTRO_PROJECT_DIR)`, marks the CLI executable, and executes `astro deploy`. Extend the script with additional steps (linting, testing, environment prep) as needed for your deployment flow.
 
 ## Getting Started Locally
 
