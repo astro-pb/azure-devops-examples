@@ -2,22 +2,23 @@ stages:
 - stage: deploy
   jobs:
   - job: deploy_image
+    pool: Default  # <-- Change this from 'Azure Pipelines'
     steps:
     - script: |
         curl -sSL install.astronomer.io | sudo bash -s
         echo 'Astro installed.'
         
         # Login to Astro
-        astro login --token-login $ASTRO_DEPLOYMENT_TOKEN
-        astro workspace switch $(ASTRONOMER_DEV_WORKSPACE_ID)
         # astro context list
         
         # # Create Astro project if not exists
-        # mkdir -p $(ASTRO_PROJECT_DIR)
-        # cd $(ASTRO_PROJECT_DIR)
-        # astro dev init
+        mkdir -p astro-test
+        cd astro test
+        astro dev init
  
         # # Deploy to Astro
-        # astro deploy $(ASTRO_DEPLOYMENT_ID) -f
+        astro deploy $(ASTRO_DEPLOYMENT_ID) -f
       env:
-        ASTRO_DEPLOYMENT_TOKEN: $(ASTRO_DEPLOYMENT_TOKEN_DEV)
+        ASTRO_API_TOKEN: $(ASTRO_API_TOKEN)
+        ASTRO_DEPLOYMENT_ID: $(ASTRO_DEPLOYMENT_ID)
+      
